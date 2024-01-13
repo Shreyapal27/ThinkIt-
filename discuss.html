@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discussion Page</title>
+    <style>
+
+      header {
+        background-color: #3c00a0;
+        z-index: 999;
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 98%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        transition: 0.5s ease;
+      }
+
+      header .brand {
+        color: #fff;
+        font-size: 2em;
+        font-weight: 650;
+        text-transform: capitalize;
+        text-decoration: none;
+      }
+
+      header .navigation {
+        position: relative;
+      }
+
+      header .navigation .navigation-items a {
+        position: relative;
+        color: #fff;
+        font-size: 1em;
+        font-weight: 550;
+        text-decoration: none;
+        margin-left: 20px;
+        margin-right: 30px;
+        transition: 0.3s ease;
+      }
+
+      header .navigation .navigation-items a:before {
+        content: '';
+        position: relative;
+        background: #fff;
+        width: 0;
+        height: 3px;
+        bottom: 0;
+        left: 0;
+        transition: 0.3s ease;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to right, rgb(169, 169, 233), rgb(181, 225, 181));
+      }
+
+      #discussionContainer {
+        max-width: 800px;
+        max-height: 700px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+      }
+
+      #discussionForm {
+        margin-bottom: 20px;
+      }
+
+      .discussionItem {
+        background-color: #fff;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+      }
+
+      .discussionItem h3 {
+        color: #3c00a0;
+      }
+
+      .discussionItem p {
+        margin-top: 10px;
+      }
+
+      .discussionItem small {
+        color: #888;
+      }
+
+      .commentItem {
+        background-color: #f5f5f5;
+        padding: 10px;
+        margin-top: 10px;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+      }
+
+      textarea, input {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+      }
+
+      button {
+        background-color: #3c00a0;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #3c00a0;
+      }
+
+      #searchInput {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+      }
+
+      #addProjectButton {
+        background-color: #3c00a0;
+        color: white;
+        padding: 10px 15px;
+        border: 5%;
+        border-color:black;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 1140px;
+        margin-top:30px;
+      }
+
+      #addProjectButton:hover {
+        background-color: #3c00a0;
+      }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="brand"><img src="images/logo.png"> ThinkIt</a>
+        <div class="menu-btn"></div>
+        <div class="navigation">
+            <div class="navigation-items">
+                <a href="index.html">HOME</a>
+                <a href="explore.html">EXPLORE</a>
+                <a href="discuss.html">DISCUSS</a>
+                <a href="contactabout.html">CONTACT US</a>
+                <a href="sign_in.html">LOG IN</a>
+            </div>
+        </div>
+            </header>
+            
+<a id="addProjectButton" href="addproject.html">ADD PROJECT</a>
+
+    <div id="discussionContainer">
+        <input type="text" id="searchInput" placeholder="Search discussions...">
+        
+        <form id="discussionForm">
+            <input type="text" id="nameInput" placeholder="Your Name">
+            <textarea id="discussionInput" placeholder="Share your thoughts..." rows="4"></textarea>
+            <button type="button" onclick="postDiscussion()">Post</button>
+        </form>
+
+        <div id="discussionList">
+            <!-- Discussion items will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        function postDiscussion() {
+            var nameInput = document.getElementById('nameInput');
+            var discussionInput = document.getElementById('discussionInput');
+            var discussionList = document.getElementById('discussionList');
+
+            // Get the input values
+            var name = nameInput.value.trim();
+            var inputText = discussionInput.value.trim();
+
+            // Check if the input is not empty
+            if (name !== "" && inputText !== "") {
+                // Create a new discussion item
+                var discussionItem = document.createElement('div');
+                discussionItem.className = 'discussionItem';
+                discussionItem.innerHTML = `
+                    <h3>${name}</h3>
+                    <p>${inputText}</p>
+                    <small>Just now</small>
+                    <textarea class="commentInput" placeholder="Add a comment..." rows="2"></textarea>
+                    <button type="button" onclick="postComment(this)">Comment</button>
+                    <div class="commentsContainer"></div>
+                `;
+
+                // Add the new discussion item to the discussion list
+                discussionList.appendChild(discussionItem);
+
+                // Clear the input fields
+                nameInput.value = "";
+                discussionInput.value = "";
+            }
+        }
+
+        function postComment(button) {
+            var commentInput = button.parentNode.querySelector('.commentInput');
+            var commentsContainer = button.parentNode.querySelector('.commentsContainer');
+
+            // Get the comment input value
+            var commentText = commentInput.value.trim();
+
+            // Check if the comment input is not empty
+            if (commentText !== "") {
+                // Create a new comment item
+                var commentItem = document.createElement('div');
+                commentItem.className = 'commentItem';
+                commentItem.innerHTML = `
+                    <p>${commentText}</p>
+                    <small>Just now</small>
+                `;
+
+                // Add the new comment item to the comments container
+                commentsContainer.appendChild(commentItem);
+
+                // Clear the comment input field
+                commentInput.value = "";
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function () {
+            var searchValue = this.value.toLowerCase();
+            var discussionItems = document.querySelectorAll('.discussionItem');
+
+            discussionItems.forEach(function (item) {
+                var textContent = item.innerText.toLowerCase();
+                item.style.display = textContent.includes(searchValue) ? 'block' : 'none';
+            });
+        });
+    </script>
+
+</body>
+</html>
+
